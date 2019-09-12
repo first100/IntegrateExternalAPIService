@@ -21,8 +21,8 @@ namespace IntegrateExternalAPIService1.Services
         Task<IEnumerable<UserDto>> GetAllAsync(string token, string url);
         Task<UserDto> GetByIdAsync(int id, string token, string baseUrl);
         Task<HttpResponseMessage> CreateAsync(string _token, string _baseUrl, UserDto userDto);
-        void Update(User user, string password = null);
-        void Delete(int id);
+        Task<HttpResponseMessage> UpdateAsync(int id, string token, string baseUrl,UserDto user);
+        Task<HttpResponseMessage> DeleteAsync(int id, string _token, string _baseUrl);
     }
     public class UserService : IUserService
     {
@@ -42,6 +42,7 @@ namespace IntegrateExternalAPIService1.Services
         public async Task<HttpResponseMessage> CreateAsync(string _token,string _baseUrl,UserDto userDto)
         {
             using (HttpClient client = new HttpClient()) {
+                
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "N9_76nHoDfC2adFYzKDz7Js_WNpNSGuhZato");
                 var result = await client.PostAsync(_baseUrl + "users", new StringContent(JsonConvert.SerializeObject(userDto), Encoding.UTF8, "application/json"));
                 return result;
@@ -49,14 +50,28 @@ namespace IntegrateExternalAPIService1.Services
              
         }
 
-        public void Delete(int id)
+        public async Task<HttpResponseMessage> DeleteAsync(int id, string _token, string _baseUrl)
         {
-
-            throw new NotImplementedException();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(_baseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "N9_76nHoDfC2adFYzKDz7Js_WNpNSGuhZato");
+            client.DefaultRequestHeaders.Accept.Clear();
+            HttpResponseMessage response = client.DeleteAsync(_baseUrl+ "users/"+id).Result;
+            return response;
+            
         }
-        public void Update(User user, string password = null)
+
+       
+        public async Task<HttpResponseMessage> UpdateAsync(int id, string token, string baseUrl, UserDto user)
         {
-            throw new NotImplementedException();
+            using (HttpClient client = new HttpClient())
+            {
+                
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "N9_76nHoDfC2adFYzKDz7Js_WNpNSGuhZato");
+                var result = await client.PutAsync(baseUrl + "users", new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+                return result;
+            }
+
         }
         public async Task<IEnumerable<UserDto>> GetAllAsync(string token, string baseUrl)
         {

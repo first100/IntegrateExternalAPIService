@@ -50,9 +50,10 @@ namespace IntegrateExternalAPIService1.Controllers
             return (await Task.FromResult( Ok(_userService.GetByIdAsync(id,_token,_baseUrl))));
         }
 
+        [HttpDelete("DeleteByIdAsync/{id}")]
         public async Task<IActionResult> DeleteByIdAsync(int id)
         {
-            return (await Task.FromResult(Ok(_userService.GetByIdAsync(id, _token, _baseUrl))));
+            return (await Task.FromResult(Ok(_userService.DeleteAsync(id, _token, _baseUrl))));
         }
 
         [HttpPost]
@@ -60,10 +61,10 @@ namespace IntegrateExternalAPIService1.Controllers
         {
             return (await Task.FromResult(Ok(_userService.CreateAsync(_token, _baseUrl,userDto))));
         }
-
-        public async Task<IActionResult> UpdateAsync(int id)
+        [HttpPut("UpdateAsync/{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody]UserDto userDto)
         {
-            return (await Task.FromResult(Ok(_userService.GetByIdAsync(id, _token, _baseUrl))));
+            return (await Task.FromResult(Ok(_userService.UpdateAsync(id, _token, _baseUrl, userDto))));
         }
 
 
