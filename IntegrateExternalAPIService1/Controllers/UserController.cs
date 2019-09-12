@@ -25,13 +25,10 @@ namespace IntegrateExternalAPIService1.Controllers
       
         public UserController(IConfiguration configuration, IUserService userService)
         {
-
-
             _configuration = configuration;
             _token = _configuration["Token"];
             _userService = userService;
             _baseUrl = _configuration["BaseUrl"];
-
         }
         public IActionResult Index()
         {
@@ -43,18 +40,32 @@ namespace IntegrateExternalAPIService1.Controllers
         public async Task<IActionResult> GetAllUsersAsync()
         {
             var usersList = _userService.GetAllAsync(_token, _baseUrl);
-            return (await Task.FromResult( Ok(_userService.GetAllAsync(_token, _baseUrl)) ));
+            return (await Task.FromResult( Ok(usersList) ));
             
         }
        
         [HttpGet("GetByIdAsync/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-
-            return (await Task.FromResult( Ok(_userService.GetById(id))));
-         
-
-          
+            return (await Task.FromResult( Ok(_userService.GetByIdAsync(id,_token,_baseUrl))));
         }
+
+        public async Task<IActionResult> DeleteByIdAsync(int id)
+        {
+            return (await Task.FromResult(Ok(_userService.GetByIdAsync(id, _token, _baseUrl))));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody]UserDto userDto)
+        {
+            return (await Task.FromResult(Ok(_userService.CreateAsync(_token, _baseUrl,userDto))));
+        }
+
+        public async Task<IActionResult> UpdateAsync(int id)
+        {
+            return (await Task.FromResult(Ok(_userService.GetByIdAsync(id, _token, _baseUrl))));
+        }
+
+
     }
 }

@@ -71,7 +71,11 @@ namespace IntegrateExternalAPIService1.Dtos
         public Meta _meta { get; set; }
         public List<Result> result { get; set; }
     }
-    
+    public class RootObjectSingleResult
+    {
+        public Meta _meta { get; set; }
+        public Result result { get; set; }
+    }
 
     public class UserDto
     {
