@@ -42,7 +42,7 @@ namespace IntegrateExternalAPIService1.Controllers
         //public IActionResult GetAllUsers()
         public async Task<IActionResult> GetAllUsersAsync()
         {
-
+            var usersList = _userService.GetAllAsync(_token, _baseUrl);
             return (await Task.FromResult( Ok(_userService.GetAllAsync(_token, _baseUrl)) ));
             
         }
@@ -51,7 +51,7 @@ namespace IntegrateExternalAPIService1.Controllers
         public async Task<IActionResult> GetByIdAsync(int id)
         {
 
-            return (await Task.FromResult( Ok(_userService.GetById(id,_token, _baseUrl))));
+            return (await Task.FromResult( Ok(_userService.GetById(id))));
          
 
           
